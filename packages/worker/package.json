@@ -1,0 +1,17 @@
+{
+  "name": "worker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./source/worker.js",
+    "dev": "nodemon ./source/worker.js"
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "bull": "^4.1.4",
+    "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0",
+    "glob": "^7.2.0"
+  }
+}
