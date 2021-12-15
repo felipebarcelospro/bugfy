@@ -1,5 +1,5 @@
 const discordConfig = {
-  token: 'OTIwMzI4OTU2OTcwOTQ2NTYw.YbixIg.hP8MecMcp20hcOGHFbCzI7n93qU'
+  token: process.env.DISCORD_TOKEN,
 }
 
 module.exports = { discordConfig }
