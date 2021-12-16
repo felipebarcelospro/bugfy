@@ -4,7 +4,7 @@ const Queue = require('bull')
 const glob = require('glob')
 const path = require('path')
 
-const { url: redisUrl } = require('./configs/redis.config')
+const redisConfig = require('./configs/redis.config')
 
 class Worker {
   constructor() {
@@ -24,14 +24,13 @@ class Worker {
     console.log(`✅  [Redis] ${jobsFiles.length} job(s) Populated`)
 
     this.queues = Object.values(jobsFiles).map((job) => ({
-      bull: new Queue(job.key, redisUrl),
+      bull: new Queue(job.key, { redis: redisConfig }),
       name: job.key,
       handle: job.handle,
       options: job.options
     }))
 
     
-    console.log(`✅  [Redis] Connected At ${redisUrl.substring(0, 30)}...`)
     console.log('✅  [Worker] Started and ready for process')
     console.log('------------------------------------------------------')
 

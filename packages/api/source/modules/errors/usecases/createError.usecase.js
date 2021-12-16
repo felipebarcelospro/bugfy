@@ -5,10 +5,10 @@ class CreateErrorUseCase {
     this.queueService = queueService
   }
 
-  execute ({ data }) {
+  async execute ({ data }) {
     const { error, discordChannelId } = data
 
-    this.queueService.send('SendDiscordMessage', { error, discordChannelId })
+    await this.queueService.send('SendDiscordMessage', { error, discordChannelId })
     return HttpResponse.ok('Error sended successfully', error)
   }
 }

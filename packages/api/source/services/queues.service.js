@@ -3,10 +3,9 @@ const redisConfig = require('../configs/redis.config')
 
 class QueuesService {
   constructor () {
-    this.configs = redisConfig
     this.queues = [
       'SendDiscordMessage'
-    ].map((queue) => new Queue(queue, this.configs))
+    ].map((queue) => new Queue(queue, { redis: redisConfig }))
   }
 
   send (name, data) {
