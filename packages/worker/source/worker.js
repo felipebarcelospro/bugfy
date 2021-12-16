@@ -12,11 +12,16 @@ class Worker {
   }
 
   start(callback) {
+    console.log('------------------------------------------------------')
+    console.log('✅  [Worker] Starting...')
+
     const jobsFiles = []
 
     glob.sync('**/*.job.js').forEach(function (file) {
       jobsFiles.push(require(path.resolve(file)))
     })
+
+    console.log(`✅  [Redis] ${jobsFiles.length} job(s) Populated`)
 
     this.queues = Object.values(jobsFiles).map((job) => ({
       bull: new Queue(job.key, redisUrl),
@@ -25,7 +30,10 @@ class Worker {
       options: job.options
     }))
 
-    callback()
+    
+    console.log(`✅  [Redis] Connected At ${redisUrl.substring(0, 30)}...`)
+    console.log('✅  [Worker] Started and ready for process')
+    console.log('------------------------------------------------------')
 
     return this.queues.forEach((queue) => {
       queue.bull.process(async (job) => {
@@ -34,7 +42,7 @@ class Worker {
 
       queue.bull.on('completed', (job) => {
         console.log({
-          status: 'completed',
+          status: '✅ completed',
           job: job.queue.name,
           attemptsMade: job.attemptsMade,
           finishedOn: job.finishedOn
@@ -43,7 +51,7 @@ class Worker {
 
       queue.bull.on('failed', async (job, err) => {
         console.error({
-          status: 'failed',
+          status: '❎ failed',
           job: job.queue.name,
           failedReason: err.message,
           attemptsMade: job.attemptsMade,
@@ -63,6 +71,5 @@ class Worker {
 }
 
 const worker = new Worker()
-worker.start(() => {
-  console.log(`✅ BUGFY(Queues) running successfully (Env: ${process.env.NODE_ENV.toUpperCase()})`)
-})
+
+worker.start()
