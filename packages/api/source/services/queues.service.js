@@ -4,7 +4,8 @@ const redisConfig = require('../configs/redis.config')
 class QueuesService {
   constructor () {
     this.queues = [
-      'SendDiscordMessage'
+      'SendDiscordMessage',
+      'SendWhatsAppMessage'
     ].map((queue) => new Queue(queue, { redis: redisConfig }))
   }
 

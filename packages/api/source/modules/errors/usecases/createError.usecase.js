@@ -6,9 +6,11 @@ class CreateErrorUseCase {
   }
 
   async execute ({ data }) {
-    const { error, discordChannelId } = data
+    const { error, discordChannelId, whatsAppGroupId } = data
 
     await this.queueService.send('SendDiscordMessage', { error, discordChannelId })
+    await this.queueService.send('SendWhatsAppMessage', { error, whatsAppGroupId })
+
     return HttpResponse.ok('Error sended successfully', error)
   }
 }
